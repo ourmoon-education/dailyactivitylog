@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { usePortalStore } from '../stores/portal';
-import { useRouter } from 'vue-router';
+import { appSettings } from '../stores/appSettings';
 import { Sun, Moon, BookOpen, Heart, Dumbbell, CheckSquare, CheckCircle2, ArrowRight, History } from 'lucide-vue-next';
 
 const store = usePortalStore();
-const router = useRouter();
 
 const cards = computed(() => [
   { id: 'day-starter', icon: Sun, label: 'Day Starter', sub: 'Set your intentions', done: store.dayStarted, href: '/day-starter', color: '#fef3c7', iconColor: '#d97706', btn: '#f59e0b' },
@@ -20,7 +19,9 @@ const cards = computed(() => [
 <template>
   <div class="space-y-5">
     <div>
-      <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Young Leaders Programme</p>
+      <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+        {{ appSettings.portal_greeting }}
+      </p>
       <h1 class="text-2xl font-black text-slate-900">{{ store.displayName }}'s Portal</h1>
       <p class="text-sm text-slate-500 mt-0.5">{{ store.todayDisplay }}</p>
     </div>
@@ -28,34 +29,35 @@ const cards = computed(() => [
     <div v-if="store.totalCount > 0" class="bg-white rounded-2xl border border-slate-100 px-4 py-3 shadow-sm">
       <div class="flex items-center justify-between mb-2">
         <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Today's Progress</span>
-        <span class="text-xs font-bold" style="color:#496763">{{ store.completedCount }}/{{ store.totalCount }}</span>
+        <span class="text-xs font-bold" :style="{ color: appSettings.primary_color }">{{ store.completedCount }}/{{ store.totalCount }}</span>
       </div>
       <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-        <div class="h-full rounded-full transition-all duration-500" style="background:#496763"
-          :style="{ width: store.totalCount ? `${(store.completedCount / store.totalCount) * 100}%` : '0%' }"></div>
+        <div class="h-full rounded-full transition-all duration-500" :style="{ background: appSettings.primary_color, width: store.totalCount ? `${(store.completedCount / store.totalCount) * 100}%` : '0%' }"></div>
       </div>
     </div>
 
     <div v-if="store.loading" class="flex justify-center py-10">
-      <div class="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style="border-color:#496763; border-top-color:transparent"></div>
+      <div class="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" :style="{ borderColor: appSettings.primary_color, borderTopColor: 'transparent' }"></div>
     </div>
 
     <div v-else class="space-y-2.5">
       <div v-for="card in cards" :key="card.id"
         class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm flex items-center gap-3.5"
-        :style="card.done && !card.always ? 'opacity:0.6' : ''">
+        :style="(card.done as boolean) && !(card as any).always ? 'opacity:0.6' : ''">
         <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" :style="{ background: card.color }">
           <component :is="card.icon" :size="20" :style="{ color: card.iconColor }" />
         </div>
         <div class="flex-1 min-w-0">
           <p class="font-black text-slate-900 text-sm leading-tight">{{ card.label }}</p>
-          <p class="text-xs text-slate-400 mt-0.5">{{ card.done && !card.always ? '✅ Done' : card.sub }}</p>
+          <p class="text-xs text-slate-400 mt-0.5">
+            {{ (card.done as boolean) && !(card as any).always ? '✅ Done' : card.sub }}
+          </p>
         </div>
-        <button v-if="!card.done || card.always"
+        <button v-if="!(card.done as boolean) || (card as any).always"
           @click="$router.push(card.href)"
           class="flex items-center gap-1 px-3 py-2 rounded-xl text-white text-xs font-bold shrink-0"
           :style="{ background: card.btn }">
-          {{ card.done && card.always ? 'View' : 'Go' }}
+          {{ (card.done as boolean) && (card as any).always ? 'View' : 'Go' }}
           <ArrowRight :size="13" />
         </button>
         <CheckCircle2 v-else :size="20" style="color:#10b981" class="shrink-0" />

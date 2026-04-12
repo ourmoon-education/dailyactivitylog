@@ -5,6 +5,7 @@ import { router } from './router';
 import './index.css';
 import { usePortalStore } from './stores/portal';
 import { setCsrf } from './services/frappe';
+import { loadAppSettings } from './stores/appSettings';
 
 function showApp() {
   document.getElementById('app-loading')!.style.display = 'none';
@@ -13,8 +14,12 @@ function showApp() {
 
 (async () => {
   try {
-    const res = await fetch('/api/method/scholars_portal.api.get_session_info', { credentials: 'include' });
-    const data = await res.json();
+    const [sessionRes] = await Promise.all([
+      fetch('/api/method/scholars_portal.api.get_session_info', { credentials: 'include' }),
+      loadAppSettings(),
+    ]);
+
+    const data = await sessionRes.json();
     const session = data.message;
 
     if (!session || session.user === 'Guest') {

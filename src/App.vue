@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePortalStore } from './stores/portal';
+import { appSettings } from './stores/appSettings';
 import { GraduationCap, LogOut } from 'lucide-vue-next';
 import { Toaster } from 'vue-sonner';
 
@@ -14,11 +15,20 @@ function logout() {
   <div class="min-h-screen" style="background:#f8fafc">
     <header class="sticky top-0 z-50 bg-white border-b border-slate-200 px-4 h-14 flex items-center justify-between shadow-sm">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background:#496763">
+        <!-- Logo -->
+        <div v-if="appSettings.logo"
+          class="w-8 h-8 rounded-lg overflow-hidden border border-slate-100">
+          <img :src="appSettings.logo" alt="logo" class="h-full w-full object-contain" />
+        </div>
+        <div v-else
+          class="w-8 h-8 rounded-lg flex items-center justify-center text-white"
+          :style="{ background: appSettings.primary_color }">
           <GraduationCap :size="16" />
         </div>
         <div class="leading-none">
-          <p class="text-sm font-black uppercase tracking-tight" style="color:#496763">Our Moon</p>
+          <p class="text-sm font-black uppercase tracking-tight" :style="{ color: appSettings.primary_color }">
+            {{ appSettings.org_name }}
+          </p>
           <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Daily Portal</p>
         </div>
       </div>
