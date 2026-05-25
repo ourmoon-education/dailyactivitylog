@@ -2,12 +2,13 @@
 import { computed } from 'vue';
 import { usePortalStore } from '../stores/portal';
 import { appSettings } from '../stores/appSettings';
-import { Sun, Moon, BookOpen, Heart, Dumbbell, CheckSquare, CheckCircle2, ArrowRight, History, Sprout, Calendar, BookMarked } from 'lucide-vue-next';
+import { Sun, Moon, BookOpen, Heart, Dumbbell, CheckSquare, CheckCircle2, ArrowRight, History, Sprout, Calendar, BookMarked, Target } from 'lucide-vue-next';
 
 const store = usePortalStore();
 
 const cards = computed(() => [
   { id: 'day-starter', icon: Sun, label: 'Day Starter', sub: 'Set your intentions', done: store.dayStarted, href: '/day-starter', color: '#fef3c7', iconColor: '#d97706', btn: '#f59e0b' },
+  { id: 'goals', icon: Target, label: 'My SMART Goals', sub: 'Review & update your goals', done: false, always: true, href: '/goals', color: '#e0f2fe', iconColor: '#0369a1', btn: '#0284c7' },
   { id: 'checklist', icon: CheckSquare, label: 'Activity Checklist', sub: `${store.completedCount}/${store.totalCount} done`, done: false, always: true, href: '/checklist', color: '#dbeafe', iconColor: '#2563eb', btn: '#3b82f6' },
   { id: 'biblical', icon: BookOpen, label: 'Biblical Comprehension', sub: 'Reading reflection', done: !!store.todayLog?.biblical_submitted, href: '/comprehension/biblical', color: '#ede9fe', iconColor: '#7c3aed', btn: '#8b5cf6' },
   { id: 'general', icon: Heart, label: 'General Comprehension', sub: 'General reflection', done: !!store.todayLog?.general_submitted, href: '/comprehension/general', color: '#d1fae5', iconColor: '#059669', btn: '#10b981' },
