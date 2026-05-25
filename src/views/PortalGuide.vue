@@ -1,7 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { ChevronLeft } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
+import { usePortalStore } from '../stores/portal';
+
 const router = useRouter();
+const store = usePortalStore();
+
+const isAdmin = computed(() => {
+  const roles: string[] = store.session?.roles || [];
+  return roles.some((r: string) => ['OME Admin', 'System Manager'].includes(r))
+    || store.session?.role === 'Admin';
+});
 </script>
 
 <template>
@@ -39,7 +49,7 @@ const router = useRouter();
         <li><a href="#directory" class="text-teal-700 font-semibold hover:underline">5. Scholar Directory</a></li>
         <li><a href="#setup" class="text-teal-700 font-semibold hover:underline">6. Getting Started — Setup Checklist</a></li>
         <li><a href="#faq" class="text-teal-700 font-semibold hover:underline">7. Frequently Asked Questions</a></li>
-        <li><a href="#test-accounts" class="text-teal-700 font-semibold hover:underline">8. Test Accounts</a> <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full ml-1">Admin only</span></li>
+        <li v-if="isAdmin"><a href="#test-accounts" class="text-teal-700 font-semibold hover:underline">8. Test Accounts</a> <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full ml-1">Admin only</span></li>
       </ol>
     </nav>
 
@@ -320,8 +330,8 @@ const router = useRouter();
       </div>
     </section>
 
-    <!-- 8. Test Accounts -->
-    <section id="test-accounts" class="bg-white rounded-2xl border border-amber-200 p-5 shadow-sm space-y-3">
+    <!-- 8. Test Accounts (admin only) -->
+    <section v-if="isAdmin" id="test-accounts" class="bg-white rounded-2xl border border-amber-200 p-5 shadow-sm space-y-3">
       <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-base font-black text-slate-900">8. Test Accounts</h2>
         <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-1 rounded-full">OME Admin only</span>
