@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { usePortalStore } from '../stores/portal';
 import { appSettings } from '../stores/appSettings';
-import { Sun, Moon, BookOpen, Heart, Dumbbell, CheckSquare, CheckCircle2, ArrowRight, History, Sprout, Calendar } from 'lucide-vue-next';
+import { Sun, Moon, BookOpen, Heart, Dumbbell, CheckSquare, CheckCircle2, ArrowRight, History, Sprout, Calendar, BookMarked } from 'lucide-vue-next';
 
 const store = usePortalStore();
 
@@ -114,6 +114,12 @@ const isWeekend = computed(() => {
       @click="$router.push('/coordinator')"
       class="w-full flex items-center justify-center gap-2 py-2 text-[11px] font-bold rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50">
       Coordinator View
+    </button>
+
+    <!-- Platform Guide -->
+    <button @click="$router.push('/portal-guide')"
+      class="w-full flex items-center justify-center gap-2 py-2 text-[11px] font-bold text-slate-400 hover:text-slate-600">
+      <BookMarked :size="13" /> Platform Guide
     </button>
   </div>
 </template>

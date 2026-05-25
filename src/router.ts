@@ -15,6 +15,7 @@ const router = createRouter({
     { path: '/weekly', name: 'Weekly Reflection', component: () => import('./views/WeeklyReflection.vue') },
     { path: '/coordinator', name: 'Coordinator', component: () => import('./views/CoordinatorOverview.vue') },
     { path: '/history/:date', name: 'Day Detail', component: () => import('./views/DayDetail.vue') },
+    { path: '/portal-guide', name: 'Platform Guide', component: () => import('./views/PortalGuide.vue') },
   ],
 });
 
