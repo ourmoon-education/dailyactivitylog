@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { usePortalStore } from '../stores/portal';
 import { toast } from 'vue-sonner';
-import { Plus, CheckCircle2, Circle, ChevronRight, ArrowRight } from 'lucide-vue-next';
+import { Plus, CheckCircle2, Circle, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-vue-next';
 
+const router = useRouter();
 const store = usePortalStore();
 const newTitle = ref('');
 const newCategory = ref('General');
@@ -35,9 +37,14 @@ async function moveToTomorrow(name: string) {
 
 <template>
   <div class="space-y-5">
-    <div>
-      <h1 class="text-xl font-black text-slate-900">Activity Checklist</h1>
-      <p class="text-xs text-slate-400 mt-0.5">{{ store.completedCount }}/{{ store.totalCount }} tasks completed</p>
+    <div class="flex items-center gap-3">
+      <button @click="router.back()" class="p-2 rounded-xl hover:bg-slate-100 text-slate-400">
+        <ChevronLeft :size="20" />
+      </button>
+      <div>
+        <h1 class="text-xl font-black text-slate-900">Activity Checklist</h1>
+        <p class="text-xs text-slate-400 mt-0.5">{{ store.completedCount }}/{{ store.totalCount }} tasks completed</p>
+      </div>
     </div>
 
     <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
