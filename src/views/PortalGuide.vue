@@ -356,7 +356,6 @@ const isAdmin = computed(() => {
           </div>
         </div>
       </div>
-      <p class="text-xs text-slate-500">Password for all: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">Test@OME2026</code></p>
       <a href="/sample-users" target="_blank"
         class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-bold"
         style="background:#496763">
