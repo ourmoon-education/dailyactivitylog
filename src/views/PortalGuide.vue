@@ -39,6 +39,7 @@ const router = useRouter();
         <li><a href="#directory" class="text-teal-700 font-semibold hover:underline">5. Scholar Directory</a></li>
         <li><a href="#setup" class="text-teal-700 font-semibold hover:underline">6. Getting Started — Setup Checklist</a></li>
         <li><a href="#faq" class="text-teal-700 font-semibold hover:underline">7. Frequently Asked Questions</a></li>
+        <li><a href="#test-accounts" class="text-teal-700 font-semibold hover:underline">8. Test Accounts</a> <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full ml-1">Admin only</span></li>
       </ol>
     </nav>
 
@@ -319,6 +320,40 @@ const router = useRouter();
       </div>
     </section>
 
+    <!-- 8. Test Accounts -->
+    <section id="test-accounts" class="bg-white rounded-2xl border border-amber-200 p-5 shadow-sm space-y-3">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <h2 class="text-base font-black text-slate-900">8. Test Accounts</h2>
+        <span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-1 rounded-full">OME Admin only</span>
+      </div>
+      <p class="text-sm text-slate-600">
+        A set of dummy accounts exists for testing every role type across all three apps. They are pre-created and ready to use.
+      </p>
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+        ⚠️ For internal testing only. Do not use these accounts for real programme data.
+      </div>
+      <div class="grid grid-cols-1 gap-2 text-sm">
+        <div v-for="u in testAccounts" :key="u.email"
+          class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black shrink-0"
+            :style="{ background: u.color + '33', color: u.color }">
+            {{ u.initials }}
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-bold text-slate-800 text-xs">{{ u.name }}</p>
+            <p class="font-mono text-[11px] text-teal-700">{{ u.email }}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">{{ u.note }}</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500">Password for all: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">Test@OME2026</code></p>
+      <a href="/sample-users" target="_blank"
+        class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-bold"
+        style="background:#496763">
+        🔐 View Full Test Accounts Page
+      </a>
+    </section>
+
     <p class="text-center text-xs text-slate-400 pb-4">Guide maintained by the OME technical team. For issues, contact your system administrator.</p>
   </div>
 </template>
@@ -372,7 +407,16 @@ export default {
           q: "Today's Sessions panel isn't showing on the dashboard.",
           a: "Timetable sessions must be seeded in the database. Run <code class=\"bg-slate-100 px-1 rounded text-xs\">bench --site [yoursite] migrate</code> on the server to trigger the default timetable setup. If sessions exist but still don't show, check that the YLP Daily Log for today exists and that the <code class=\"bg-slate-100 px-1 rounded text-xs\">get_todays_sessions</code> API is returning data."
         },
-      ]
+      ],
+      testAccounts: [
+        { initials: 'AM', name: 'Alice Mwangi', email: 'test.student@ourmoon.org.uk',      color: '#2563eb', note: 'Student — full portal (Daily, CareerPath, Directory)' },
+        { initials: 'JO', name: 'James Okonkwo', email: 'test.reviewer@ourmoon.org.uk',    color: '#7c3aed', note: 'Essay Reviewer — Review Queue, AI Review, comments' },
+        { initials: 'GA', name: 'Grace Achebe',  email: 'test.dirreviewer@ourmoon.org.uk', color: '#059669', note: 'Directory Reviewer — full profiles & Frappe links' },
+        { initials: 'MT', name: 'Michael Tunde', email: 'test.admin@ourmoon.org.uk',       color: '#dc2626', note: 'OME Admin (no student record) — Admin Panel only' },
+        { initials: 'PN', name: 'Priya Naidoo',  email: 'test.adminplus@ourmoon.org.uk',   color: '#9d174d', note: 'OME Admin + Student record — dual experience' },
+        { initials: 'SK', name: 'Sarah Kamau',   email: 'test.coordinator@ourmoon.org.uk', color: '#d97706', note: 'YLP Coordinator + Student — Coordinator View' },
+        { initials: 'DB', name: 'David Banda',   email: 'test.bothreviewer@ourmoon.org.uk',color: '#0369a1', note: 'Essay Reviewer + Directory Reviewer combined' },
+      ],
     };
   }
 };
