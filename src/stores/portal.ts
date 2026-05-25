@@ -24,8 +24,11 @@ export const usePortalStore = defineStore('portal', () => {
   const completedCount = computed(() => activities.value.filter(a => a.done && !a.parent_activity).length);
   const totalCount = computed(() => activities.value.filter(a => !a.parent_activity).length);
   const isCoordinator = computed(() => {
-    const roles = session.value?.roles || [];
-    return roles.some((r: string) => ['System Manager', 'OME Admin', 'YLP Coordinator', 'Admin'].includes(r));
+    // Check full Frappe roles array (returned by updated API)
+    const roles: string[] = session.value?.roles || [];
+    if (roles.some((r) => ['System Manager', 'OME Admin', 'YLP Coordinator', 'Admin'].includes(r))) return true;
+    // Fallback: check app-level role string for backwards compat
+    return session.value?.role === 'Admin';
   });
 
   function setSession(s: any) { session.value = s; }
