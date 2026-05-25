@@ -20,6 +20,19 @@ const isWeekend = computed(() => {
   const day = new Date().getDay();
   return day === 0 || day === 6;
 });
+
+// Map a timetable session to the relevant tile route
+function sessionRoute(session: any): string {
+  const form: string = session.feedback_form || '';
+  const cat: string = session.category || '';
+  if (form === 'fitness'     || cat === 'Fitness')     return '/fitness';
+  if (form === 'agriculture' || cat === 'Agriculture')  return '/agriculture';
+  if (form === 'weekly'      || cat === 'Reflection')   return '/weekly';
+  if (cat === 'Spiritual')                              return '/day-starter';
+  if (cat === 'Academic')                               return '/comprehension/general';
+  // Management, Service, Independent, anything else → checklist
+  return '/checklist';
+}
 </script>
 
 <template>
@@ -72,28 +85,24 @@ const isWeekend = computed(() => {
 
     <!-- Today's Sessions -->
     <div v-if="store.todaySessions.length > 0" class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm space-y-3">
-      <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Today's Sessions</p>
+      <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Today's Schedule</p>
       <div v-for="session in store.todaySessions" :key="session.name"
         class="flex items-center gap-3 py-2 border-b border-slate-50 last:border-0">
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-xs font-bold text-slate-700">{{ session.time_start }}</span>
-            <span class="text-xs font-semibold text-slate-900 truncate">{{ session.label }}</span>
+            <span class="text-xs font-bold text-slate-500 tabular-nums shrink-0">{{ session.time_start?.slice(0,5) }}</span>
+            <span class="text-xs font-semibold text-slate-900">{{ session.label }}</span>
             <span v-if="session.category"
-              class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+              class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-400">
               {{ session.category }}
             </span>
           </div>
         </div>
-        <span v-if="session.feedback_submitted"
-          class="text-[11px] font-bold text-emerald-600 shrink-0">
-          Done ✅
-        </span>
-        <button v-else
-          @click="$router.push(`/sessions?session_id=${session.name}`)"
-          class="text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shrink-0"
+        <button
+          @click="$router.push(sessionRoute(session))"
+          class="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shrink-0"
           style="background:#496763">
-          Log
+          Go <ArrowRight :size="11" />
         </button>
       </div>
     </div>
