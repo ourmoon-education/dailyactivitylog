@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [vue(), tailwindcss()],
   base: '/portal/',
   resolve: { alias: { '@': resolve(__dirname, 'src') } },
-  build: { outDir: 'dist' },
+  build: {
+    outDir: '../ourmoon-platforms/apps/scholars_portal/scholars_portal/public/portal',
+    emptyOutDir: true,
+  },
 });
