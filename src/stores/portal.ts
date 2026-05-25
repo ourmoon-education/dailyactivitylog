@@ -8,6 +8,7 @@ export const usePortalStore = defineStore('portal', () => {
   const todayLog = ref<any>(null);
   const activities = ref<any[]>([]);
   const loading = ref(false);
+  const todaySessions = ref<any[]>([]);
 
   const studentName = computed(() => session.value?.student?.name);
   const displayName = computed(() =>
@@ -22,6 +23,10 @@ export const usePortalStore = defineStore('portal', () => {
   const dayFinished = computed(() => !!todayLog.value?.day_finisher_submitted);
   const completedCount = computed(() => activities.value.filter(a => a.done && !a.parent_activity).length);
   const totalCount = computed(() => activities.value.filter(a => !a.parent_activity).length);
+  const isCoordinator = computed(() => {
+    const roles = session.value?.roles || [];
+    return roles.some((r: string) => ['System Manager', 'OME Admin', 'YLP Coordinator', 'Admin'].includes(r));
+  });
 
   function setSession(s: any) { session.value = s; }
 
@@ -31,6 +36,11 @@ export const usePortalStore = defineStore('portal', () => {
     try {
       todayLog.value = await portalApi.getTodayLog(studentName.value, todayDate.value);
       activities.value = await portalApi.getActivities(todayLog.value.name);
+      try {
+        todaySessions.value = await portalApi.getTodaySessions(todayLog.value.name);
+      } catch {
+        // sessions are optional — ignore errors
+      }
     } catch (e) { console.error('loadToday:', e); }
     finally { loading.value = false; }
   }
@@ -52,9 +62,9 @@ export const usePortalStore = defineStore('portal', () => {
   }
 
   return {
-    session, todayLog, activities, loading,
+    session, todayLog, activities, loading, todaySessions,
     studentName, displayName, todayDate, todayDisplay,
-    dayStarted, dayFinished, completedCount, totalCount,
+    dayStarted, dayFinished, completedCount, totalCount, isCoordinator,
     setSession, loadToday, checkActivity, addActivity, moveActivity,
   };
 });

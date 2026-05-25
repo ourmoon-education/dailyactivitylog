@@ -34,4 +34,19 @@ export const portalApi = {
   submitComprehension: (p: Record<string, unknown>) => call<any>('scholars_portal.daily.submit_comprehension', p),
   submitFitness: (p: Record<string, unknown>) => call<any>('scholars_portal.daily.submit_fitness', p),
   getLogHistory: (s: string, limit = 14) => get<any[]>('scholars_portal.daily.get_log_history', { student_name: s, limit }),
+  // Pre-fill forms
+  getComprehension: (logName: string, type: string) => get<any>('scholars_portal.daily.get_comprehension', { log_name: logName, type }),
+  getFitnessLog: (logName: string) => get<any>('scholars_portal.daily.get_fitness_log', { log_name: logName }),
+  // Agriculture
+  getAgricultureLog: (logName: string) => get<any>('scholars_portal.daily.get_agriculture_log', { log_name: logName }),
+  submitAgriculture: (p: Record<string, unknown>) => call<any>('scholars_portal.daily.submit_agriculture', p),
+  // Sessions
+  getTodaySessions: (logName: string) => get<any[]>('scholars_portal.daily.get_todays_sessions', { log_name: logName }),
+  getSessionFeedback: (logName: string, sessionId: string) => get<any>('scholars_portal.daily.get_session_feedback', { log_name: logName, session_id: sessionId }),
+  submitSessionFeedback: (p: Record<string, unknown>) => call<any>('scholars_portal.daily.submit_session_feedback', p),
+  // Weekly reflection
+  getOrCreateWeeklyReflection: (studentName: string, weekStart: string) => get<any>('scholars_portal.daily.get_or_create_weekly_reflection', { student_name: studentName, week_start: weekStart }),
+  submitWeeklyReflection: (p: Record<string, unknown>) => call<any>('scholars_portal.daily.submit_weekly_reflection', p),
+  // Coordinator
+  getCoordinatorOverview: (date?: string) => get<any[]>('scholars_portal.daily.get_coordinator_overview', date ? { date } : {}),
 };

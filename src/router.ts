@@ -10,6 +10,11 @@ const router = createRouter({
     { path: '/fitness', name: 'Fitness', component: () => import('./views/FitnessLog.vue') },
     { path: '/day-finisher', name: 'Day Finisher', component: () => import('./views/DayFinisher.vue') },
     { path: '/history', name: 'History', component: () => import('./views/History.vue') },
+    { path: '/agriculture', name: 'Agriculture', component: () => import('./views/AgricultureLog.vue') },
+    { path: '/sessions', name: 'Sessions', component: () => import('./views/SessionFeedback.vue') },
+    { path: '/weekly', name: 'Weekly Reflection', component: () => import('./views/WeeklyReflection.vue') },
+    { path: '/coordinator', name: 'Coordinator', component: () => import('./views/CoordinatorOverview.vue') },
+    { path: '/history/:date', name: 'Day Detail', component: () => import('./views/DayDetail.vue') },
   ],
 });
 
